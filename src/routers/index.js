@@ -1,13 +1,17 @@
 const express = require("express");
 const registerUser = require("./register");
-const loginUser = require("./login");
-const paymentApi = require("./payment");
+const {loginUser,logoutUser} = require("./login");
+const passport = require("passport");
 
 const userRouter = express.Router();
-const userRegister = express.Router();
 
-userRegister.post("/register",registerUser);
+userRouter.post("/register",registerUser);
 userRouter.post("/login",loginUser);
-// userRouter.use(paymentApi);
+userRouter.get("/logout",logoutUser)
+userRouter.get("/payment",passport.authenticate("jwt", { session: false }),paymentUser);
 
-module.exports = {userRouter,userRegister};
+async function paymentUser(req,res){
+    res.send("You have a total of: 2400$");
+  }
+
+module.exports = userRouter;
